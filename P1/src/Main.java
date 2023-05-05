@@ -11,14 +11,15 @@ public class Main
 		System.out.println("Amogir");
 		Folder f = new Folder();
 
-		f.setCoord(8, 15, new Element(Direction.up, Color.white));
-		f.setCoord(8, 14, new Element(Direction.left, Color.black));
-		f.setCoord(7, 14, new Element(Direction.up, Color.white));
-		f.setCoord(7, 13, new Element(Direction.right, Color.white));
-		f.setCoord(8, 13, new Element(Direction.right, Color.black));
-		f.setCoord(9, 13, new Element(Direction.down, Color.white));
-		f.setCoord(9, 14, new Element(Direction.right, Color.black));
-		f.setCoord(10, 14, new Element(Direction.right, Color.black));
+		f.setCoord(8, 15, new Element(Direction.up, Color.black,0));
+		f.setCoord(8, 14, new Element(Direction.left, Color.white,1));
+		f.setCoord(7, 14, new Element(Direction.down, Color.black,2));
+		f.setCoord(7, 15, new Element(Direction.left, Color.black,3));
+
+		f.setCoord(6, 15, new Element(Direction.up, Color.white,4));
+		f.setCoord(6, 14, new Element(Direction.up, Color.white,5));
+		f.setCoord(6, 13, new Element(Direction.right, Color.white,6));
+		f.setCoord(7, 13, new Element(Direction.empty, Color.black,7));
 
 		f.printme();
 

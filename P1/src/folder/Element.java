@@ -18,10 +18,15 @@ public class Element {
 
     public Color color = Color.white;
 
-    public Element(Direction d, Color w)
+    public Element next = null;
+
+    public int id;
+
+    public Element(Direction d, Color w, int id)
     {   
         color = w;
         facingDirection = d;
+        this.id = id;
     }
 
     public String getStr()

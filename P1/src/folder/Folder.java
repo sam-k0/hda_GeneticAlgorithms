@@ -8,8 +8,12 @@ import folder.Element.Direction;
 public class Folder {
 
 
-    private Element[][] grid = new Element[16][16]; 
+    private ArrayList<Element>[][] grid = new ArrayList[16][16]; 
+    private Element lastInserted = null; // last inserted element ref
+    private double fitness = 0.0;
+    private ArrayList<Element> checkedAlready = new ArrayList<>();
 
+    // checks if coords inside array bounds
     private boolean inbounds(int x, int y)
     {
         if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
@@ -32,10 +36,10 @@ public class Folder {
         }
     }
 
-    
-
+    // needs workover
     public void printme()
     {
+        /* *
         for(int i = 0; i < grid.length; i++)
         {
             for(int j = 0; j < grid[i].length; j++)
@@ -57,15 +61,52 @@ public class Folder {
                     System.out.println("");
                 }
             }
+        }*/
+    }
+
+    // checks at position compared to element and updates fitness
+    private void checkAt(int x, int y, Element current, Direction direction)
+    {
+        if(inbounds(x, y)) // Check left
+        {
+            ArrayList<Element> l = grid[x][y];
+            if(l != null) // check if field not empty
+            {
+                for(Element currentOther : l) // check for all elements at that pos
+                {
+                    if(currentOther.color== Color.black && !checkedAlready.contains(currentOther) )                //
+                    {
+                        if(!facing(current, currentOther, direction))
+                        {
+                            fitness += 1.0;
+                            checkedAlready.add(current); // current or other lol
+                        }
+                    }
+                }                            
+            }                        
         }
     }
 
+    // insert an element at given position
     public void setCoord(int x, int y, Element e)
     {
         if(!inbounds(x, y))
         {return;}
 
-        grid[x][y] = e;
+        if(grid[x][y] == null)
+        {
+            // create new list
+            grid[x][y] = new ArrayList<Element>();
+        }
+        // append to list
+        grid[x][y].add(e);
+
+        if(lastInserted != null) // is gonna be null for first
+        {
+            lastInserted.next = e;
+        }
+
+        lastInserted = e; // update last inserted
     }
 
     private boolean facing(Element one, Element two, Direction relativeDirection)
@@ -109,7 +150,7 @@ public class Folder {
         return false;
     }
 
-    public double berechneFitness()
+    public double berechneFitness() 
     {
         /**
          * 2 Schwarze sind nicht miteinander verbunden wenn:
@@ -117,78 +158,39 @@ public class Folder {
          * - B nicht auf A zeigt
          * 
          * Wenn dies der Fall ist gibt es stonks
+         * 
+         * TODO: update
          */
-        double leFitness = 0.0;
-        ArrayList<Element> checkedAlready = new ArrayList<Element>();
-
+        checkedAlready.clear();
+			
         for(int x = 0; x < grid.length; x++)
         {
             for(int y = 0; y < grid[0].length; y++)
             {
-                Element current = grid[x][y];
-                Element currentOther = null;
-                if(current == null || current.color == Color.white)
+                ArrayList<Element> fieldList = grid[x][y];
+                if(fieldList == null)
                 {
                     continue;
                 }
+                // list exists: 1 or more elements
+                //Element currentOther = null;
 
+                for(Element current : fieldList) // loop over all elements at that pos
+                { 
+                    if(current.color == Color.white)
+                    {
+                        continue;
+                    }
+                    // only check black
+                    checkAt(x-1, y, current, Direction.left);
+                    checkAt(x+1, y, current,Direction.right);
+                    checkAt(x, y+1, current,Direction.down);
+                    checkAt(x, y-1, current,Direction.up);
+                }
                 
-
-                // Only blacks remain
-                if(inbounds(x-1, y)) // Check left
-                {
-                    currentOther = grid[x-1][y];
-                    if(currentOther != null && currentOther.color== Color.black && !checkedAlready.contains(currentOther))                
-                    {
-                        if(!facing(current, currentOther, Direction.left))
-                        {
-                            leFitness += 1.0;
-                            checkedAlready.add(currentOther);
-                        }
-                    }
-                }
-
-                if(inbounds(x+1, y)) // Check right
-                {
-                    currentOther = grid[x+1][y];
-                    if(currentOther != null && currentOther.color== Color.black && !checkedAlready.contains(currentOther))                
-                    {
-                        if(!facing(current, currentOther, Direction.right))
-                        {
-                            leFitness += 1.0;
-                            checkedAlready.add(currentOther);
-                        }
-                    }
-                }
-
-                if(inbounds(x, y+1)) // Check below
-                {
-                    currentOther = grid[x][y+1];
-                    if(currentOther != null && currentOther.color== Color.black && !checkedAlready.contains(currentOther))                
-                    {
-                        if(!facing(current, currentOther, Direction.down))
-                        {
-                            leFitness += 1.0;
-                            checkedAlready.add(currentOther);
-                        }
-                    }
-                }
-
-                if(inbounds(x, y+1)) // Check above
-                {
-                    currentOther = grid[x][y-1];
-                    if(currentOther != null && currentOther.color== Color.black && !checkedAlready.contains(currentOther))                
-                    {
-                        if(!facing(current, currentOther, Direction.up))
-                        {
-                            leFitness += 1.0;
-                            checkedAlready.add(currentOther);
-                        }
-                    }
-                }
             }
         }
-
-        return leFitness;
+        System.out.println(checkedAlready.toString());
+        return fitness;
     }
 }

@@ -1,71 +1,48 @@
 package folder;
 
 public class Element {
-    public enum Direction{
-        up,
-        down,
-        left,
-        right,
-        empty
+
+    private int id;
+    private Element next;
+    private Direction nextDirection;
+    private Color color;
+
+    public enum Direction {
+        STRAIGHT,
+        RIGHT,
+        LEFT
     }
 
     public enum Color{
-        white,
-        black
+        WHITE,
+        BLACK
     }
 
-    public Direction facingDirection = Direction.up; 
-
-    public Color color = Color.white;
-
-    public Element next = null;
-
-    public int id;
-
-    public Element(Direction d, Color w, int id)
-    {   
-        color = w;
-        facingDirection = d;
+    public Element(int id, Direction dir, Color col) {
         this.id = id;
+        this.next = null;
+        this.nextDirection = dir;
+        this.color = col;
     }
 
-    public String getStr()
-    {
-        String mystr= "[";
-        switch(facingDirection)
-        {
-            case up:
-            mystr += '^';
-            break;
+    public int getId() {
+        return id;
+    }
 
-            case down:
-            mystr += 'v';
-            break;
+    public Element getNext() {
+        return next;
+    }
 
-            case left:
-            mystr += '<';
-            break;
+    public void setNext(Element next, Direction direction) {
+        this.next = next;
+        this.nextDirection = direction;
+    }
 
-            case right:
-            mystr += '>';
-            break;
+    public Direction getNextDirection() {
+        return this.nextDirection;
+    }
 
-            default:
-                break;
-        }
-        
-        switch(color)
-        {
-            case white:
-            mystr += 'W';
-            break;
-
-            case black:
-            mystr += "B";
-            break;
-
-        }
-
-        return mystr+"]";
+    public void setNextDirection(Direction direction) {
+        this.nextDirection = direction;
     }
 }

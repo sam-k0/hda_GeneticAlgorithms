@@ -4,9 +4,11 @@ public class Element {
 
     private int id;
     private Element next;
-    private Direction nextDirection;
+    private Direction direction; // pointing to next element 
     private Color color;
 
+    public CDir d2Dir;
+    
     public enum Direction {
         STRAIGHT,
         RIGHT,
@@ -18,10 +20,17 @@ public class Element {
         BLACK
     }
 
+    enum CDir {
+        up,
+        down,
+        left,
+        right
+    }
+
     public Element(int id, Direction dir, Color col) {
         this.id = id;
         this.next = null;
-        this.nextDirection = dir;
+        this.direction = dir;
         this.color = col;
     }
 
@@ -33,16 +42,18 @@ public class Element {
         return next;
     }
 
-    public void setNext(Element next, Direction direction) {
+    public Color getColor()
+    {return this.color;}
+
+    public void setNext(Element next) {
         this.next = next;
-        this.nextDirection = direction;
     }
 
-    public Direction getNextDirection() {
-        return this.nextDirection;
+    public Direction getDirection() {
+        return this.direction;
     }
 
-    public void setNextDirection(Direction direction) {
-        this.nextDirection = direction;
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

@@ -13,6 +13,7 @@ public class Main
 
 		Folder f = new Folder();
 
+		// Aufg. 1
 		f.addElement(new Element(0, Direction.STRAIGHT, Color.BLACK));
 		f.addElement(new Element(1, Direction.LEFT, Color.WHITE));
 		f.addElement(new Element(2, Direction.LEFT, Color.BLACK));
@@ -22,7 +23,21 @@ public class Main
 		f.addElement(new Element(6, Direction.RIGHT, Color.WHITE));
 		f.addElement(new Element(7, Direction.STRAIGHT, Color.BLACK));
 
-		//f.
+		System.out.println(f.getFitness());
+
+
+		Folder f2 = new Folder();
+		f2.addElement(new Element(0, Direction.STRAIGHT, Color.BLACK));
+		f2.addElement(new Element(1, Direction.LEFT, Color.WHITE));
+		f2.addElement(new Element(2, Direction.LEFT, Color.BLACK));
+		f2.addElement(new Element(3, Direction.RIGHT, Color.BLACK));
+		f2.addElement(new Element(4, Direction.LEFT, Color.WHITE));
+		f2.addElement(new Element(5, Direction.LEFT, Color.WHITE));
+		f2.addElement(new Element(6, Direction.LEFT, Color.WHITE));
+		f2.addElement(new Element(7, Direction.STRAIGHT, Color.BLACK));
+
+		System.out.println(f2.getFitness());
+
 
 	}
 }

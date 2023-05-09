@@ -3,6 +3,7 @@ package folder;
 import java.util.ArrayList;
 import java.util.List;
 import folder.Element.CDir;
+import folder.Element.Color;
 import folder.Element.Direction;
 
 public class Folder {
@@ -16,15 +17,18 @@ public class Folder {
 
     public void addElement(Element newe)
     {
-        numElements ++;
-        if(lastInserted == null && head == null)
+        if(this.head == null)
         {
             head = newe;
             lastInserted = newe;
-            return;
         }
-
-        lastInserted.setNext(newe);
+        else
+        {
+            lastInserted.setNext(newe);
+            lastInserted = newe;
+        }
+    
+        
     }
 
     public ArrayList<Element2d> convertToElement2dList(Element head) {
@@ -126,13 +130,10 @@ public class Folder {
         return CDir.down;
     }
 
-    double distance(Element2d one, Element2d two) {
-        int x1, x2, y1, y2;
-        x1 = one.x;
-        y1 = one.y;
-        x2 = two.x;
-        y2 = two.y;
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    public static double calculateDistance(int x1, int y1, int x2, int y2) {
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     public double getFitness()
@@ -141,17 +142,38 @@ public class Folder {
         ArrayList<Element2d> list = convertToElement2dList(this.head);
         Element2d outer;
         Element2d inner;
-        return 0.0;
-        /* 
+
+        ArrayList<Element2d> blacklist = new ArrayList<>();
+
+        System.out.println(list.size());
+        
+        
+        
         for(int i = 0; i < list.size(); i++)
         {
-            //outer = list.
+            outer = list.get(i);
             for(int j = 0; j < list.size(); j++)
             {
+                inner = list.get(j);
 
+                double dist = calculateDistance(inner.x, inner.y, outer.x, outer.y);
+                //System.out.println(dist);
+
+                if(dist == 1.0 && inner.color == Color.BLACK && outer.color == Color.BLACK)
+                { // Nur adjazente & schwarze behalten
+                    if(inner.Element3d.getNext() == outer.Element3d || outer.Element3d.getNext() == inner.Element3d)
+                    { // Keine direkt verbundenen behalten
+                        System.out.println("Sus");
+                    }
+                    else if(!blacklist.contains(inner))
+                    {
+                        fit += 1.0;
+                    }
+                } 
             }
-        }*/
-
+            blacklist.add(outer);
+        }
+        return fit;
     }
 }
 

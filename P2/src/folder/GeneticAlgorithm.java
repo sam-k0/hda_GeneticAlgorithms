@@ -10,7 +10,7 @@ public class GeneticAlgorithm {
         currentPopulation = p;
     }
 
-    public Population evolve()
+    private Population evolve()
     {
         List<Folder> populationFoldings = currentPopulation.getFoldings();
 

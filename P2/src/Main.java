@@ -29,20 +29,10 @@ public class Main
 
 		System.out.println("----------");
 
-		Folder f2 = new Folder();
-		f2.addElement(new Element(0, Direction.STRAIGHT, Color.BLACK));
-		f2.addElement(new Element(1, Direction.LEFT, Color.WHITE));
-		f2.addElement(new Element(2, Direction.LEFT, Color.BLACK));
-		f2.addElement(new Element(3, Direction.RIGHT, Color.BLACK));
-		f2.addElement(new Element(4, Direction.LEFT, Color.WHITE));
-		f2.addElement(new Element(5, Direction.LEFT, Color.WHITE));
-		f2.addElement(new Element(6, Direction.LEFT, Color.WHITE));
-		f2.addElement(new Element(7, Direction.STRAIGHT, Color.BLACK));
+		Population population = new Population(f, 100);
+		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		System.out.println("Fitness"+f2.getFitness());
-		System.out.println("Overlaps: "+f2.getOverlaps());
-
-
+		geneticAlgorithm.run(100);
 
 	}
 }

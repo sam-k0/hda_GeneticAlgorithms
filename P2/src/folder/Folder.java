@@ -16,7 +16,9 @@ public class Folder {
     private int contacts = 0;
 
     public Folder()
-    {}
+    {
+        
+    }
 
     public Element getHead()
     {

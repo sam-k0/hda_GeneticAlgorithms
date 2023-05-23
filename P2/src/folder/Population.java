@@ -58,8 +58,10 @@ public class Population {
 
         for(int i = 0; i < num; i++)
         {
-            
+            population.add(cloneFoldingAndRandomizeDir(baseFolding));
         }
+
+        System.out.println("Created randomized pop with " + population.size() + " Foldings");
     }
 
     public Population(List<Folder> population)

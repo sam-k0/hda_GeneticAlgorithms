@@ -11,11 +11,17 @@ public class Folder {
     private Element lastInserted = null;
     private Element head = null; // first inserted (id 0)
     private int numElements = 0;
-    private double fitness = 0;
+    private double fitness = 0.0;
     private int overlaps = 0;
+    private int contacts = 0;
 
     public Folder()
     {}
+
+    public Element getHead()
+    {
+        return head;
+    }
 
     public void addElement(Element newe)
     {
@@ -145,16 +151,19 @@ public class Folder {
 
     public double getFitness()
     {
-        double fit = 0.0;
+        calcFitnessAndOverlaps();
+        return fitness;
+    }
+
+    public void calcFitnessAndOverlaps()
+    {
+        int tcontacts = 0;
+        int toverlaps = 0;
         ArrayList<Element2d> list = convertToElement2dList(this.head);
         Element2d outer;
         Element2d inner;
 
         ArrayList<Element2d> blacklist = new ArrayList<>();
-
-        //System.out.println(list.size());
-        
-        
         
         for(int i = 0; i < list.size(); i++)
         {
@@ -168,7 +177,8 @@ public class Folder {
                 //if(outer.x == inner.x && outer.y == inner.y && inner != outer )
                 if(dist == 0.0 && inner != outer && !blacklist.contains(inner))
                 {
-                    overlaps += 1;
+                    toverlaps += 1;
+                    System.out.println("Überlappung mit "+ outer.id + " und " + inner.id);
                 }
 
                 if(dist == 1.0 && inner.color == Color.BLACK && outer.color == Color.BLACK)
@@ -179,16 +189,20 @@ public class Folder {
                     }
                     else if(!blacklist.contains(inner))
                     {
-                        fit += 1.0;
+                        System.out.println("Kontakt mit "+ outer.id + " und " + inner.id);
+                        tcontacts += 1;
                     }
                 } 
             }
 
             blacklist.add(outer);
         }
-        this.fitness = fit;
+        this.contacts = tcontacts;
+        this.overlaps = toverlaps;
+        System.out.println("Contacts:"+tcontacts);
+        System.out.println("Overlaps"+this.overlaps);
 
-        return fit;
+        this.fitness = ((double)this.contacts / (double)(this.overlaps+1));
     }
 
     public int calculateHammingDistance(int num1, int num2) {

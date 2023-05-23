@@ -8,11 +8,11 @@ public class Main
 {
 	public static void main(String args[])
 	{
-		System.out.println("Amogir");
+		//System.out.println("Amogir");
 
 		Folder f = new Folder();
 		
-		System.out.println("Hamming dist:" + f.calculateHammingDistance(2891, 3927));
+		//System.out.println("Hamming dist:" + f.calculateHammingDistance(2891, 3927));
 
 		// Aufg. 1
 		f.addElement(new Element(0, Direction.STRAIGHT, Color.BLACK));
@@ -27,6 +27,7 @@ public class Main
 		System.out.println("Fit:"+f.getFitness());
 		System.out.println("Over.:"+f.getOverlaps());
 
+		System.out.println("----------");
 
 		Folder f2 = new Folder();
 		f2.addElement(new Element(0, Direction.STRAIGHT, Color.BLACK));

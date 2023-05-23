@@ -24,7 +24,8 @@ public class Main
 		f.addElement(new Element(6, Direction.RIGHT, Color.WHITE));
 		f.addElement(new Element(7, Direction.STRAIGHT, Color.BLACK));
 
-		System.out.println(f.getFitness());
+		System.out.println("Fit:"+f.getFitness());
+		System.out.println("Over.:"+f.getOverlaps());
 
 
 		Folder f2 = new Folder();
@@ -37,7 +38,9 @@ public class Main
 		f2.addElement(new Element(6, Direction.LEFT, Color.WHITE));
 		f2.addElement(new Element(7, Direction.STRAIGHT, Color.BLACK));
 
-		System.out.println(f2.getFitness());
+		System.out.println("Fitness"+f2.getFitness());
+		System.out.println("Overlaps: "+f2.getOverlaps());
+
 
 
 	}

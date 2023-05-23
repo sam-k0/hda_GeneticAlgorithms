@@ -11,6 +11,8 @@ public class Folder {
     private Element lastInserted = null;
     private Element head = null; // first inserted (id 0)
     private int numElements = 0;
+    private double fitness = 0;
+    private int overlaps = 0;
 
     public Folder()
     {}
@@ -64,11 +66,11 @@ public class Folder {
 
             if(currentDir2d == CDir.down)
             {
-                y++;
+                y--;
             }
             else if(currentDir2d == CDir.up)
             {
-                y--;
+                y++;
             }
             else if(currentDir2d == CDir.right)
             {
@@ -136,6 +138,11 @@ public class Folder {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    public int getOverlaps()
+    {
+        return overlaps;
+    }
+
     public double getFitness()
     {
         double fit = 0.0;
@@ -145,7 +152,7 @@ public class Folder {
 
         ArrayList<Element2d> blacklist = new ArrayList<>();
 
-        System.out.println(list.size());
+        //System.out.println(list.size());
         
         
         
@@ -157,13 +164,18 @@ public class Folder {
                 inner = list.get(j);
 
                 double dist = calculateDistance(inner.x, inner.y, outer.x, outer.y);
-                //System.out.println(dist);
+               
+                //if(outer.x == inner.x && outer.y == inner.y && inner != outer )
+                if(dist == 0.0 && inner != outer && !blacklist.contains(inner))
+                {
+                    overlaps += 1;
+                }
 
                 if(dist == 1.0 && inner.color == Color.BLACK && outer.color == Color.BLACK)
                 { // Nur adjazente & schwarze behalten
                     if(inner.Element3d.getNext() == outer.Element3d || outer.Element3d.getNext() == inner.Element3d)
                     { // Keine direkt verbundenen behalten
-                        System.out.println("Sus");
+                        //System.out.println("Sus");
                     }
                     else if(!blacklist.contains(inner))
                     {
@@ -171,9 +183,26 @@ public class Folder {
                     }
                 } 
             }
+
             blacklist.add(outer);
         }
+        this.fitness = fit;
+
         return fit;
+    }
+
+    public int calculateHammingDistance(int num1, int num2) {
+        int xor = num1 ^ num2;
+        int distance = 0;
+        
+        while (xor != 0) {
+            if ((xor & 1) == 1) {
+                distance++;
+            }
+            xor >>= 1;
+        }
+        
+        return distance;
     }
 }
 

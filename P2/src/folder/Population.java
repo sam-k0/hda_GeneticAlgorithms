@@ -140,6 +140,7 @@ public class Population {
         return population.get(pos);
     }
 
+    // Prints info about all foldings
     public void printAllFoldingsDirections()
     {
         int i = 0;

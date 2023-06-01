@@ -32,19 +32,28 @@ public class GeneticAlgorithm {
             cumulativeFitness.add(currentCum);
         }
 
-        while(expectedNum > alreadyAddedNum)
+        while(expectedNum > alreadyAddedNum) // Genug leute in die nächste gen mitnehmen
         {
-            for(int i = 0; i < populationFoldings.size(); i++)
+            for(int i = 0; i < populationFoldings.size(); i++) // über alle Foldings aus der current pop loopen
             {
                 double rand = Math.random();
                 if(rand <=  cumulativeFitness.get(i))
                 {
+                    System.out.println("Added! " + alreadyAddedNum + "/" + expectedNum);
                     forNewPop.add(populationFoldings.get(i));
+
+                    alreadyAddedNum ++;
+                    break;
                 }   
             }
         }
         
         return new Population(forNewPop);  
+    }
+
+    public List<Population> getAllPopulations()
+    {
+        return allPopulations;
     }
 
     public void run(int numOfGenerations)
@@ -57,6 +66,8 @@ public class GeneticAlgorithm {
             currentPopulation = evolve();
             allPopulations.add(currentPopulation);
         }
+
+        //System.out.println(allPopulations.size());
     }
 
 }

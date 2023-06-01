@@ -153,11 +153,11 @@ public class Folder {
 
     public double getFitness()
     {
-        calcFitnessAndOverlaps();
+        calcFitnessAndOverlaps(false);
         return fitness;
     }
 
-    public void calcFitnessAndOverlaps()
+    public void calcFitnessAndOverlaps(boolean doPrint)
     {
         int tcontacts = 0;
         int toverlaps = 0;
@@ -180,7 +180,10 @@ public class Folder {
                 if(dist == 0.0 && inner != outer && !blacklist.contains(inner))
                 {
                     toverlaps += 1;
-                    System.out.println("Überlappung mit "+ outer.id + " und " + inner.id);
+                    if(doPrint)
+                    {
+                        System.out.println("Überlappung mit "+ outer.id + " und " + inner.id);
+                    }                  
                 }
 
                 if(dist == 1.0 && inner.color == Color.BLACK && outer.color == Color.BLACK)
@@ -191,7 +194,11 @@ public class Folder {
                     }
                     else if(!blacklist.contains(inner))
                     {
-                        System.out.println("Kontakt mit "+ outer.id + " und " + inner.id);
+                        if(doPrint)
+                        {
+                            System.out.println("Kontakt mit "+ outer.id + " und " + inner.id);
+                        }
+                        
                         tcontacts += 1;
                     }
                 } 
@@ -201,8 +208,13 @@ public class Folder {
         }
         this.contacts = tcontacts;
         this.overlaps = toverlaps;
-        System.out.println("Contacts:"+tcontacts);
-        System.out.println("Overlaps"+this.overlaps);
+        
+        if(doPrint)
+        {
+            System.out.println("Contacts:"+tcontacts);
+            System.out.println("Overlaps"+this.overlaps);
+        }
+        
 
         this.fitness = ((double)this.contacts / (double)(this.overlaps+1));
     }
@@ -219,6 +231,29 @@ public class Folder {
         }
         
         return distance;
+    }
+
+    public String getPrintDirections()
+    {
+        String complete = "";
+        Element curr = head;
+        while(curr != null)
+        {
+            if(curr.getDirection() == Direction.LEFT)
+            {
+                complete += "L-";
+            }
+            else if(curr.getDirection() == Direction.RIGHT)
+            {
+                complete += "R-";
+            }
+            else if(curr.getDirection() == Direction.STRAIGHT)
+            {
+                complete += "S-";
+            }
+            curr = curr.getNext();
+        }
+        return complete;
     }
 }
 

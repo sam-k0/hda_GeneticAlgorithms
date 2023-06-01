@@ -63,6 +63,25 @@ public class Population {
             population.add(cloneFoldingAndRandomizeDir(baseFolding));
         }
 
+        // calculate some metadata
+        
+        double tot = 0.0;
+        for(Folder current : population) // Fitness berechnen für alle
+        {
+            tot += current.getFitness();
+        }
+        totalFitness = tot;
+
+
+        // avg
+        this.avgFitness = (double)tot/(double)population.size();
+
+        // calc prop fitnesses in same order als foldings
+        for(Folder currentFolding : population)
+        {
+            proportionalFitnesses.add(currentFolding.getFitness() / totalFitness);
+        }
+
         System.out.println("Created randomized pop with " + population.size() + " Foldings");
     }
 
@@ -106,6 +125,11 @@ public class Population {
         return proportionalFitnesses;
     }
 
+    public double getProportinalFitnessAt(int i)
+    {
+        return proportionalFitnesses.get(i);
+    }
+
     public List<Folder> getFoldings()
     {
         return population;
@@ -114,5 +138,16 @@ public class Population {
     public Folder getFoldingAt(int pos)
     {
         return population.get(pos);
+    }
+
+    public void printAllFoldingsDirections()
+    {
+        int i = 0;
+
+        for(Folder f : population)
+        {
+            System.out.println(f.getPrintDirections() + " Fitness: " + f.getFitness() + " |Prop Fitness: " + getProportinalFitnessAt(i) + " |Total Pop Fit: "+getTotalFitness());
+            i++;
+        }
     }
 }

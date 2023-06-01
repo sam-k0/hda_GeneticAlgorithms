@@ -56,6 +56,8 @@ public class Population {
     {
         num = populationSizeWanted;
 
+        population = new ArrayList<Folder>();
+
         for(int i = 0; i < num; i++)
         {
             population.add(cloneFoldingAndRandomizeDir(baseFolding));

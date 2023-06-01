@@ -30,9 +30,9 @@ public class Main
 		System.out.println("----------");
 
 		Population population = new Population(f, 100);
-		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
+		//GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(100);
+		//geneticAlgorithm.run(100);
 
 	}
 }

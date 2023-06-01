@@ -3,7 +3,7 @@ package folder;
 import java.util.ArrayList;
 import java.util.List;
 import folder.Element.CDir;
-import folder.Element.Color;
+import folder.Element.EColor;
 import folder.Element.Direction;
 
 public class Folder {
@@ -151,6 +151,11 @@ public class Folder {
         return overlaps;
     }
 
+    public int getContacts()
+    {
+        return contacts;
+    }
+
     public double getFitness()
     {
         calcFitnessAndOverlaps(false);
@@ -186,7 +191,7 @@ public class Folder {
                     }                  
                 }
 
-                if(dist == 1.0 && inner.color == Color.BLACK && outer.color == Color.BLACK)
+                if(dist == 1.0 && inner.color == EColor.BLACK && outer.color == EColor.BLACK)
                 { // Nur adjazente & schwarze behalten
                     if(inner.Element3d.getNext() == outer.Element3d || outer.Element3d.getNext() == inner.Element3d)
                     { // Keine direkt verbundenen behalten

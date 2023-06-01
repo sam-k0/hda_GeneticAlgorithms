@@ -5,7 +5,7 @@ public class Element {
     private int id;
     private Element next;
     private Direction direction; // pointing to next element 
-    private Color color;
+    private EColor color;
 
     public CDir d2Dir;
     
@@ -15,7 +15,7 @@ public class Element {
         LEFT
     }
 
-    public enum Color{
+    public enum EColor{
         WHITE,
         BLACK
     }
@@ -27,7 +27,7 @@ public class Element {
         right
     }
 
-    public Element(int id, Direction dir, Color col) {
+    public Element(int id, Direction dir, EColor col) {
         this.id = id;
         this.next = null;
         this.direction = dir;
@@ -42,7 +42,7 @@ public class Element {
         return next;
     }
 
-    public Color getColor()
+    public EColor getColor()
     {return this.color;}
 
     public void setNext(Element next) {

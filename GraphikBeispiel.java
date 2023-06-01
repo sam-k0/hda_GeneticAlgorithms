@@ -62,10 +62,6 @@ public class GraphikBeispiel {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		
-		
-		
-	}
 
-	
+	}
 }

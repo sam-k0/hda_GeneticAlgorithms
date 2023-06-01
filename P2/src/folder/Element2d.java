@@ -1,12 +1,12 @@
 package folder;
 
-import folder.Element.Color;
+import folder.Element.EColor;
 
 public class Element2d {
     public int x;
     public int y;
     public int id;
-    public Color color;
+    public EColor color;
     public Element Element3d;
 
     public Element2d(int x, int y, Element ele)

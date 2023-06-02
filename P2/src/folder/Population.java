@@ -151,4 +151,17 @@ public class Population {
             i++;
         }
     }
+
+    public Folder getBestCandidate()
+    {
+        Folder best = population.get(0);
+        for(Folder folder : population)
+        {
+            if(folder.getFitness() > best.getFitness())
+            {
+                best = folder;
+            }
+        }
+        return best;
+    }
 }

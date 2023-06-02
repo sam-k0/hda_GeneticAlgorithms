@@ -48,11 +48,11 @@ public class Main
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(100);
+		geneticAlgorithm.run(4);
 
 		int imgcnt = 0;
 
-		for(int i = 0; i < 3; i++)
+		/*for(int i = 0; i < 3; i++)
 		{
 			Population p = geneticAlgorithm.getAllPopulations().get(i);
 			//System.out.println(p.avgFitness);
@@ -66,7 +66,9 @@ public class Main
 
 			}
 
-		}
+		}*/
+
+		
 		
 
 	}

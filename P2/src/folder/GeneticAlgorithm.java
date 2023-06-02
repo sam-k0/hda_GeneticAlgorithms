@@ -1,5 +1,6 @@
 package folder;
 import java.util.*;
+import folder.CSVDumper;
 
 public class GeneticAlgorithm {
     private List<Population> allPopulations;
@@ -58,6 +59,49 @@ public class GeneticAlgorithm {
         return allPopulations;
     }
 
+    private void dumpToFile()
+    {
+        int i = 0;
+        String[] headers = {
+        "Gen",
+        "Avg Gen Fitness",
+        "Fit of Gen best",
+        "Fit of Total Best",
+        "total best contact cnt",
+        "total best overlaps cnt"
+        };
+
+        CSVDumper dumper = new CSVDumper("Generations.csv", headers);
+        
+        Folder bestBestFolder = allPopulations.get(0).getBestCandidate();
+        Folder bestOfThisGen = allPopulations.get(0).getBestCandidate();
+        for(Population p : this.allPopulations) // Iterate all populations
+        {
+            ArrayList<String> ldata = new ArrayList<>();
+
+            // add values
+            bestOfThisGen = p.getBestCandidate(); // Get best of this generation
+            if(bestBestFolder.getFitness() < bestOfThisGen.getFitness()) // if this generations best is better than total best
+            {
+                bestBestFolder = bestOfThisGen; // update total best
+            }
+
+            ldata.add(String.valueOf(i)); // gen
+            ldata.add(String.valueOf(p.getAvgFitness())); // avg gen fit
+            ldata.add(String.valueOf(bestOfThisGen.getFitness())); // fit of gen best
+            ldata.add(String.valueOf(bestBestFolder.getFitness())); // fit of total best
+            ldata.add(String.valueOf(bestBestFolder.getContacts())); // contacts
+            ldata.add(String.valueOf(bestBestFolder.getOverlaps()));  // overlaps
+
+
+            String[] data =  ldata.toArray(new String[0]);
+            dumper.writeToCSVFile(data);            
+            i++;
+        }
+
+        dumper.saveCSVFile();
+    }
+
     public void run(int numOfGenerations)
     {
         allPopulations = new ArrayList<>();
@@ -69,7 +113,7 @@ public class GeneticAlgorithm {
             allPopulations.add(currentPopulation);
         }
 
-        //System.out.println(allPopulations.size());
+        dumpToFile();
     }
 
 }

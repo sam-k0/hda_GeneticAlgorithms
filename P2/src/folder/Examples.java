@@ -1,3 +1,4 @@
+package folder;
 
 // benchmark sequences for the 2d HP model
 // 0 = hydrophil, "white"

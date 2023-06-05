@@ -21,7 +21,7 @@ public class CSVDumper {
             for (int i = 0; i < headers.length; i++) {
                 writer.append(headers[i]);
                 if (i != headers.length - 1) {
-                    writer.append(',');
+                    writer.append(';');
                 }
             }
             writer.append('\n');
@@ -37,7 +37,7 @@ public class CSVDumper {
             for (int i = 0; i < data.length; i++) {
                 writer.append(data[i]);
                 if (i != data.length - 1) {
-                    writer.append(',');
+                    writer.append(';');
                 }
             }
             writer.append('\n');

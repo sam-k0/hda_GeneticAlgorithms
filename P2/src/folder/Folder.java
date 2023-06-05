@@ -20,6 +20,28 @@ public class Folder {
         
     }
 
+    public Folder(String bitString) // For using the benchmark
+    {
+        for(int i = 0; i < bitString.length(); i++)
+        {
+            EColor nCol = EColor.WHITE;
+            char currChar = bitString.charAt(i);
+            // decide color
+            if(currChar == '0')
+            {
+                nCol = EColor.WHITE;
+            }
+            else if(currChar == '1')
+            {
+                nCol = EColor.BLACK;
+            }
+
+            this.addElement(new Element(i, Direction.STRAIGHT, nCol));
+        }
+
+        System.out.println("Constructed a folder from bitString");
+    }
+
     public Element getHead()
     {
         return head;

@@ -3,13 +3,13 @@ import folder.Element.EColor;
 import folder.Element.Direction;
 
 import java.io.*;
-
+import folder.Examples;
 public class Main
 {
 	public static void main(String args[])
 	{
 		//System.out.println("Amogir");
-
+/*/
 		Folder f = new Folder();
 		
 		//System.out.println("Hamming dist:" + f.calculateHammingDistance(2891, 3927));
@@ -24,7 +24,7 @@ public class Main
 		f.addElement(new Element(6, Direction.RIGHT, EColor.WHITE));
 		f.addElement(new Element(7, Direction.STRAIGHT, EColor.BLACK));
 
-
+/*
 		Folder f2 = new Folder();
 		f2.addElement(new Element(0, Direction.STRAIGHT, EColor.BLACK));
 		f2.addElement(new Element(1, Direction.LEFT, EColor.WHITE));
@@ -34,24 +34,29 @@ public class Main
 		f2.addElement(new Element(5, Direction.LEFT, EColor.WHITE));
 		f2.addElement(new Element(6, Direction.LEFT, EColor.WHITE));
 		f2.addElement(new Element(7, Direction.STRAIGHT, EColor.BLACK));
-		
+		*/
+
+
+		Folder f = new Folder(Examples.SEQ20);
+
 		System.out.println("Fit:"+f.getFitness());
 		System.out.println("Over.:"+f.getOverlaps());
 
 		System.out.println("----------");
 
-		//ImageGenerator ig = new ImageGenerator(f2);
+		//!Comment for single image
+		//ImageGenerator myig = new ImageGenerator(f, "Sus.png");
 
-		
 
 		Population population = new Population(f, 100);
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(4);
+		geneticAlgorithm.run(99);
 
 		int imgcnt = 0;
 
+		//!Comment img gen
 		/*for(int i = 0; i < 3; i++)
 		{
 			Population p = geneticAlgorithm.getAllPopulations().get(i);
@@ -67,9 +72,7 @@ public class Main
 			}
 
 		}*/
-
-		
-		
+	
 
 	}
 }

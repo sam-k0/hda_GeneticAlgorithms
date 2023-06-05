@@ -27,11 +27,11 @@ public class Population {
             if(doChange >= 0.5) // Mit 50% wird was geändert
             {
                 double newDir = Math.random();
-                if(newDir < 0.3) // nach links
+                if(newDir < 0.4) // nach links
                 {
                     newE.setDirection(Direction.LEFT);
                 }
-                else if(newDir > 0.3 && newDir < 0.6)// nach rechts
+                else if(newDir > 0.4 && newDir < 0.8)// nach rechts
                 {
                     newE.setDirection(Direction.RIGHT);
                 }

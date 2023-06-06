@@ -68,15 +68,12 @@ public class ImageGenerator {
         return overlaps;
     }
 
-    public BufferedImage createImage(List<Element2d> elements, double minX, double minY, double maxX, double maxY, int numOverlaps, int numContacts) {
+    public BufferedImage createImage(List<Element2d> elements, double minX, double minY, double maxX, double maxY, int numOverlaps, int numContacts, double fitness) {
         // Calculate the size of each grid slot and the margin
         int cellSize = 64;
         int marginSize = 32;
         int cellOverlayOffset = 8;
         int labelOffset = 8; // Offset for label positioning
-    
-        // Create a map to keep track of positions and their element counts
-        Map<Point, Integer> positionCountMap = new HashMap<>();
     
         // Calculate the width and height of the image based on the grid layout
         int imageWidth = (int) Math.ceil((maxX - minX + 1) * cellSize + (maxX - minX) * marginSize) + 50;
@@ -100,7 +97,10 @@ public class ImageGenerator {
         g2d.drawString("Overlaps: "+numOverlaps, 10, imageHeight-30);
     
         // Draw the second line of text in red color
-        g2d.drawString("Contacts: "+numContacts, 10, imageHeight);
+        g2d.drawString("Contacts: "+numContacts, 10, imageHeight-15);
+
+        // Draw the average fitness
+        g2d.drawString("Fitness: "+ fitness, 10, imageHeight);
     
         // Reset the drawing color back to black
         g2d.setColor(Color.BLACK);
@@ -195,7 +195,7 @@ public class ImageGenerator {
         setLowestCoords(list); // Get the boundaries
 
         folder.calcFitnessAndOverlaps(false);
-        BufferedImage bi = createImage(list, minX, minY, maxX, maxY, folder.getOverlaps(), folder.getContacts());
+        BufferedImage bi = createImage(list, minX, minY, maxX, maxY, folder.getOverlaps(), folder.getContacts(), folder.getFitness());
 
         saveImageToPNG(bi, filename);
     }

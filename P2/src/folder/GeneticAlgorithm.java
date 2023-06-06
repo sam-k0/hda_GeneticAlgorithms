@@ -87,9 +87,9 @@ public class GeneticAlgorithm {
             }
 
             ldata.add(String.valueOf(i)); // gen
-            ldata.add(String.valueOf(p.getAvgFitness())); // avg gen fit
-            ldata.add(String.valueOf(bestOfThisGen.getFitness())); // fit of gen best
-            ldata.add(String.valueOf(bestBestFolder.getFitness())); // fit of total best
+            ldata.add(String.format(Locale.GERMANY,"%f",p.getAvgFitness())); // avg gen fit
+            ldata.add(String.format(Locale.GERMANY,"%f",bestOfThisGen.getFitness())); // fit of gen best
+            ldata.add(String.format(Locale.GERMANY,"%f",bestBestFolder.getFitness())); // fit of total best
             ldata.add(String.valueOf(bestBestFolder.getContacts())); // contacts
             ldata.add(String.valueOf(bestBestFolder.getOverlaps()));  // overlaps
 
@@ -100,6 +100,7 @@ public class GeneticAlgorithm {
         }
 
         dumper.saveCSVFile();
+        ImageGenerator bestimg = new ImageGenerator(bestBestFolder, "besteFaltung.png");
     }
 
     public void run(int numOfGenerations)

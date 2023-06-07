@@ -11,8 +11,38 @@ public class GeneticAlgorithm {
         currentPopulation = p;
     }
 
+
+    public Population selection2() {
+        double totalFitness = 0.0;
+
+        Random random = new Random();
+
+        for (Folder folding : currentPopulation.getFoldings()) {
+            totalFitness += folding.getFitness();
+        }
+
+        List<Folder> selectedFoldings = new ArrayList<>();
+        int populationSize = currentPopulation.num;
+
+        for (int i = 0; i < populationSize; i++) {
+            double randomFitness = random.nextDouble() * totalFitness;
+            double cumulativeFitness = 0.0;
+
+            for (Folder folding : currentPopulation.getFoldings()) {
+                cumulativeFitness += folding.getFitness();
+                if (cumulativeFitness >= randomFitness) {
+                    selectedFoldings.add(folding);
+                    break;
+                }
+            }
+        }
+
+        return new Population(selectedFoldings);
+    }
+
     private Population selection()
     {
+        
         // Retrieve the list of folders from the current population
         List<Folder> populationFoldings = currentPopulation.getFoldings();
         // Retrieve average and total fitness from the current population
@@ -103,20 +133,27 @@ public class GeneticAlgorithm {
         ImageGenerator bestimg = new ImageGenerator(bestBestFolder, "besteFaltung.png");
     }
 
-    public void run(int numOfGenerations)
+    public void run(int numOfGenerations, double mutationRate, double crossoverRate)
     {
         allPopulations = new ArrayList<>();
         allPopulations.add(currentPopulation);
+        int expectedNum = currentPopulation.num; // Set the expected number of individuals in the new population
 
         for(int i = 0; i < numOfGenerations; i++)
         {
-            currentPopulation.mutate(); // Mutate the new population
-            currentPopulation = selection(); // Select new population
-            
+            currentPopulation = selection2(); // Select new population
+            currentPopulation.mutate(mutationRate);
+            currentPopulation.crossover(crossoverRate);
             allPopulations.add(currentPopulation);
+
+            // Check for errors (population size is too small)
+            if(currentPopulation.getFoldings().size() < expectedNum)
+            {
+                System.out.println("ERROR: Population size is too small!");            
+            }
         }
 
-        dumpToFile();
+        dumpToFile(); // erstellt auch das Bild der besten Faltung
     }
 
 }

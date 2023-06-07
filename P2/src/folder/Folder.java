@@ -10,7 +10,6 @@ public class Folder {
 
     private Element lastInserted = null;
     private Element head = null; // first inserted (id 0)
-    private int numElements = 0;
     private double fitness = 0.0;
     private int overlaps = 0;
     private int contacts = 0;
@@ -40,6 +39,15 @@ public class Folder {
         }
 
         System.out.println("Constructed a folder from bitString");
+    }
+
+    // use this constructor for crossover
+    public Folder(List<Element> elementsFromCrossover)
+    {
+        for(Element e : elementsFromCrossover)
+        {
+            this.addElement(e);
+        }
     }
 
     public Element getHead()
@@ -282,6 +290,19 @@ public class Folder {
         }
         return complete;
     }
+
+    public int getLength()
+    {
+        int length = 0;
+        Element curr = head;
+        while(curr != null)
+        {
+            length++;
+            curr = curr.getNext();
+        }
+        return length;
+    }
+
 }
 
 

@@ -54,41 +54,65 @@ public class Population {
     }
 
 
-    private void randomizeDirections()
+    // randomize directon at one position
+    private void randomizeDirection(int index)
     {
-        for(Folder current : population)
+        Folder current = population.get(index);
+        // Choose a random position in the current element to change the Direction
+        int pos = (int)(Math.random() * current.getLength()-1);
+        Element currentE = current.getHead();
+        for(int i = 0; i < pos; i++)
         {
-            Element currentE = current.getHead();
-            while(true)
+            currentE = currentE.getNext();
+        }
+        // Change now
+        Direction oldDir = currentE.getDirection();
+        Direction newDir = oldDir;
+        boolean changedCorrectly = false;
+        while(!changedCorrectly) // While they are the same, change
+        {
+            // Change now
+            double newDirChance = Math.random();
+            if(newDirChance < 0.33) // nach links
             {
-                double doChange = Math.random();
-                if(doChange >= 0.5) // Mit 50% wird was geändert
-                {
-                    double newDir = Math.random();
-                    if(newDir < 0.4) // nach links
-                    {
-                        currentE.setDirection(Direction.LEFT);
-                    }
-                    else if(newDir > 0.4 && newDir < 0.8)// nach rechts
-                    {
-                        currentE.setDirection(Direction.RIGHT);
-                    }
-                    else // geradeaus
-                    {
-                        currentE.setDirection(Direction.STRAIGHT);
-                    }
-                }
-                currentE = currentE.getNext();
-                if(currentE == null)
-                {break;}
+                newDir = Direction.LEFT;
+            }
+            else if(newDirChance > 0.33 && newDirChance < 0.66)// nach rechts
+            {
+                newDir = Direction.RIGHT;
+            }
+            else // geradeaus
+            {
+                newDir = Direction.STRAIGHT;
+            }
+
+            if(oldDir != newDir)
+            {
+                changedCorrectly = true;
             }
         }
     }
 
-    public void mutate()
+    public void mutate(double mutationRate)
     {
-        randomizeDirections();
+        // Calculate number of elements to mutate
+        int numToMutate = (int)(mutationRate * population.size());
+        ArrayList<Integer> alreadyMutated = new ArrayList<Integer>();
+        
+        // Get a random element and mutate it
+        for(int i = 0; i < numToMutate; i++)
+        {
+            int index = (int)(Math.random() * population.size());
+            while(alreadyMutated.contains(index)) // Make sure to select 2 different
+            {
+                index = (int)(Math.random() * population.size());
+            }
+            alreadyMutated.add(index);
+            randomizeDirection(index); // call the function and hope that java passes a pointer
+        }
     }
+   
+   
     // Makes a deep copy of the given folding
     private Folder cloneFolding(Folder folder)
     {
@@ -154,7 +178,6 @@ public class Population {
         }
         totalFitness = tot;
 
-
         // avg
         this.avgFitness = (double)tot/(double)population.size();
 
@@ -219,5 +242,82 @@ public class Population {
             }
         }
         return best;
+    }
+
+    // assuming they have the same length
+    // Makes a crossover between two things
+    private void makeCrossoverWith(Folder oneFolder, Folder otherFolder, int crossoverPoint)
+    {
+        Element curr = oneFolder.getHead();
+        Element otherCurr = otherFolder.getHead();
+        Element temp;
+        int i = 0;
+
+        while(i < crossoverPoint)
+        {
+            curr = curr.getNext();
+            otherCurr = otherCurr.getNext();
+            i++;
+        }
+        temp = curr.getNext();
+        curr.setNext(otherCurr.getNext());
+        otherCurr.setNext(temp);
+    }
+
+
+/*
+ // Assign index1 and index2 to two different random Foldings
+        index1 = (int)(Math.random() * population.size());
+        index2 = (int)(Math.random() * population.size());
+        while(index1 == index2) // Make sure to select 2 different
+        {
+            index2 = (int)(Math.random() * population.size());
+        }
+
+        // Crossover the two selected foldings
+        // Get a crossover point and make sure its not the first or last element
+        int crossoverPoint = (int)(Math.random() * population.get(index1).getLength()-1);
+        while(crossoverPoint == 0)
+        {
+            crossoverPoint = (int)(Math.random() * population.get(index1).getLength()-1);
+        }
+        
+        makeCrossoverWith(population.get(index1), population.get(index2), crossoverPoint);
+ */
+
+    public void crossover(double crossoverRate)
+    {
+        // Calculate number of elements to mutate
+        int numToCrossover = (int)(crossoverRate * population.size());
+        int index1, index2;
+        List<Integer> alreadyCrossovered = new ArrayList<Integer>();
+        // Loop numToCrossover times and check that the index1 and index2 are not already selected
+        for(int i = 0; i < numToCrossover; i++)
+        {
+            index1 = (int)(Math.random() * population.size());
+            while(alreadyCrossovered.contains(index1))
+            {
+                index1 = (int)(Math.random() * population.size());
+            }
+            alreadyCrossovered.add(index1);
+
+            index2 = (int)(Math.random() * population.size());
+            while(index1 == index2 || alreadyCrossovered.contains(index2)) // Make sure to select 2 different
+            {
+                index2 = (int)(Math.random() * population.size());
+            }
+            alreadyCrossovered.add(index2);
+
+            // Crossover the two selected foldings
+            // Get a crossover point and make sure its not the first or last element
+            int crossoverPoint = (int)(Math.random() * population.get(index1).getLength()-1);
+            while(crossoverPoint == 0)
+            {
+                crossoverPoint = (int)(Math.random() * population.get(index1).getLength()-1);
+            }
+            
+            makeCrossoverWith(population.get(index1), population.get(index2), crossoverPoint);
+        }
+
     }
 }

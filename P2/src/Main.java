@@ -3,6 +3,8 @@ import folder.Element.EColor;
 import folder.Element.Direction;
 
 import java.io.*;
+import java.util.ArrayList;
+
 import folder.Examples;
 public class Main
 {
@@ -37,27 +39,20 @@ public class Main
 		*/
 
 
-		Folder f = new Folder(Examples.SEQ20);
+// Running GA
+/**/
+		Folder f = new Folder(Examples.SEQ50);
 
-		System.out.println("Fit:"+f.getFitness());
-		System.out.println("Over.:"+f.getOverlaps());
-
-		System.out.println("----------");
-
-		//!Comment for single image
-		//ImageGenerator myig = new ImageGenerator(f, "Sus.png");
-
-
-		Population population = new Population(f, 100);
+		Population population = new Population(f, 200);
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(50);
+		geneticAlgorithm.run(500,0.02, 0.02);
+/**/
 
-		int imgcnt = 0;
 
-		//!Comment img gen
-		/*for(int i = 0; i < 3; i++)
+	/*
+		for(int i = 0; i < 3; i++)
 		{
 			Population p = geneticAlgorithm.getAllPopulations().get(i);
 			//System.out.println(p.avgFitness);
@@ -71,9 +66,29 @@ public class Main
 
 			}
 
-		}*/
-	
+		}
+	*/
 
+
+// Testing crossover
+/*
+		Folder t1 = new Folder("100101");
+		Folder t2 = new Folder("010110");
+
+		ArrayList<Folder> l1 = new ArrayList<Folder>();
+
+		ImageGenerator ig11 = new ImageGenerator(t1, "image1.png");
+		ImageGenerator ig22 = new ImageGenerator(t2, "image2.png");
+
+		l1.add(t1);
+		l1.add(t2);
+
+		Population p = new Population(l1);
+		p.makeCrossoverWith(t1, t2, 3);
+
+		ImageGenerator ig = new ImageGenerator(t1, "image11.png");
+		ImageGenerator ig2 = new ImageGenerator(t2, "image22.png");
+*/
 	}
 }
 

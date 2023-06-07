@@ -13,6 +13,7 @@ public class Population {
 
     List<Double> proportionalFitnesses = new ArrayList<>();
     
+    // Only use this for the first population
     private Folder cloneFoldingAndRandomizeDir(Folder folder)
     {
         Folder newFolder = new Folder();
@@ -50,6 +51,57 @@ public class Population {
 
         return newFolder;
 
+    }
+
+
+    private void randomizeDirections()
+    {
+        for(Folder current : population)
+        {
+            Element currentE = current.getHead();
+            while(true)
+            {
+                double doChange = Math.random();
+                if(doChange >= 0.5) // Mit 50% wird was geändert
+                {
+                    double newDir = Math.random();
+                    if(newDir < 0.4) // nach links
+                    {
+                        currentE.setDirection(Direction.LEFT);
+                    }
+                    else if(newDir > 0.4 && newDir < 0.8)// nach rechts
+                    {
+                        currentE.setDirection(Direction.RIGHT);
+                    }
+                    else // geradeaus
+                    {
+                        currentE.setDirection(Direction.STRAIGHT);
+                    }
+                }
+                currentE = currentE.getNext();
+                if(currentE == null)
+                {break;}
+            }
+        }
+    }
+
+    // Makes a deep copy of the given folding
+    private Folder cloneFolding(Folder folder)
+    {
+        Folder newFolder = new Folder(); 
+        Element current = folder.getHead();
+
+        while(true)
+        {
+            Element newE = new Element(current.getId(), current.getDirection(), current.getColor());
+
+            newFolder.addElement(newE);            
+            current = current.getNext(); // In der original einen Element weiter gehen
+            
+            if(current == null) // end of sequence
+            {break;}
+        }
+        return newFolder;
     }
 
     public Population(Folder baseFolding, int populationSizeWanted)

@@ -85,6 +85,10 @@ public class Population {
         }
     }
 
+    public void mutate()
+    {
+        randomizeDirections();
+    }
     // Makes a deep copy of the given folding
     private Folder cloneFolding(Folder folder)
     {

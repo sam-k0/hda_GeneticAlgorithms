@@ -11,7 +11,7 @@ public class GeneticAlgorithm {
         currentPopulation = p;
     }
 
-    private Population evolve()
+    private Population selection()
     {
         // Retrieve the list of folders from the current population
         List<Folder> populationFoldings = currentPopulation.getFoldings();
@@ -40,7 +40,7 @@ public class GeneticAlgorithm {
             for(int i = 0; i < populationFoldings.size(); i++) // über alle Foldings aus der current pop loopen
             {
                 double rand = Math.random();
-                if(rand <=  cumulativeFitness.get(i))
+                if(rand <= cumulativeFitness.get(i))
                 {
                     //System.out.println("Added! " + alreadyAddedNum + "/" + expectedNum);
                     forNewPop.add(populationFoldings.get(i));
@@ -110,7 +110,9 @@ public class GeneticAlgorithm {
 
         for(int i = 0; i < numOfGenerations; i++)
         {
-            currentPopulation = evolve();
+            currentPopulation.mutate(); // Mutate the new population
+            currentPopulation = selection(); // Select new population
+            
             allPopulations.add(currentPopulation);
         }
 

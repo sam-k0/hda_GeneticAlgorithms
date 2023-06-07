@@ -52,7 +52,7 @@ public class Main
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(99);
+		geneticAlgorithm.run(50);
 
 		int imgcnt = 0;
 

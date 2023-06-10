@@ -40,6 +40,42 @@ public class GeneticAlgorithm {
         return new Population(selectedFoldings);
     }
 
+    public Population selectionTournament(int tournamentSize)
+    {
+        int populationSize = currentPopulation.num;
+        Random random = new Random();
+        List<Folder> forNewPop = new ArrayList<>();
+
+        // Perform tournament selection multiple times to create the new population
+        for (int i = 0; i < populationSize; i++) {
+            List<Folder> tournament = new ArrayList<>();
+
+            // Select random individuals for the tournament
+            for (int j = 0; j < tournamentSize; j++) {
+                int randomIndex = random.nextInt(currentPopulation.num);
+                Folder folder = currentPopulation.getFoldingAt(randomIndex);
+                tournament.add(folder);
+            }
+
+            // Sort the tournament individuals by fitness (ascending order)
+            Collections.sort(tournament, new Comparator<Folder>() {
+                @Override
+                public int compare(Folder folder1, Folder folder2) {
+                    // Compare fitness values (assuming higher is better)
+                    return Double.compare(folder1.getFitness(), folder2.getFitness());
+                }
+            });
+
+            // Select the individual with the highest fitness (last in the sorted tournament list)
+            Folder selectedFolder = tournament.get(tournamentSize - 1);
+
+            // Add the selected individual to the new population
+            forNewPop.add(selectedFolder);
+        }
+
+        return new Population(forNewPop);
+    }
+
     private Population selection()
     {
         

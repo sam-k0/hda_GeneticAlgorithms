@@ -2,10 +2,7 @@ package folder;
 
 import java.awt.Color;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +10,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import java.util.*;
-import java.awt.Point;
-import java.awt.geom.Ellipse2D;
 
 
 import folder.Element.EColor;
@@ -138,9 +133,6 @@ public class ImageGenerator {
             x = x+cellOverlayOffset*numOfOverlaps(elements, element);
             y = y+cellOverlayOffset*numOfOverlaps(elements, element);
     
-            // Calculate the center coordinates of the cell
-            int centerX = x + cellSize / 2;
-            int centerY = y + cellSize / 2;
     
             // Determine the color of the cell based on the element's color value
             Color cellColor = element.color == EColor.BLACK ? Color.BLACK : Color.WHITE;

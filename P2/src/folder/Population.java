@@ -1,8 +1,6 @@
 package folder;
 import java.util.*;
 
-import javax.print.Doc;
-
 import folder.Element.Direction;
 
 public class Population {

@@ -1,10 +1,4 @@
 import folder.*;
-import folder.Element.EColor;
-import folder.Element.Direction;
-
-import java.io.*;
-import java.util.ArrayList;
-
 import folder.Examples;
 public class Main
 {

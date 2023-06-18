@@ -8,6 +8,8 @@ public class Population {
     public int num;
     public double totalFitness;
     public double avgFitness;
+    public double crossoverRate = 0.0;
+    public double mutationRate= 0.0;
 
     List<Double> proportionalFitnesses = new ArrayList<>();
     

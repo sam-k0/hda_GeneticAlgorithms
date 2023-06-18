@@ -90,7 +90,9 @@ public class GeneticAlgorithm {
         "Fit of Gen best",
         "Fit of Total Best",
         "total best contact cnt",
-        "total best overlaps cnt"
+        "total best overlaps cnt",
+        "crossover rate",
+        "mutation rate"
         };
 
         CSVDumper dumper = new CSVDumper("Generations.csv", headers);
@@ -114,7 +116,8 @@ public class GeneticAlgorithm {
             ldata.add(String.format(Locale.GERMANY,"%f",bestBestFolder.getFitness())); // fit of total best
             ldata.add(String.valueOf(bestBestFolder.getContacts())); // contacts
             ldata.add(String.valueOf(bestBestFolder.getOverlaps()));  // overlaps
-
+            ldata.add(String.format(Locale.GERMANY,"%f",p.crossoverRate)); // crossover rate
+            ldata.add(String.format(Locale.GERMANY,"%f",p.mutationRate)); // mutation rate
 
             String[] data =  ldata.toArray(new String[0]);
             dumper.writeToCSVFile(data);            
@@ -139,6 +142,10 @@ public class GeneticAlgorithm {
             mutationRate = (i / (double) numOfGenerations) * maxMutationRate;
             crossoverRate = (i / (double) numOfGenerations) * maxCrossoverRate;
 
+            System.out.println("Generation " + i + " of " + numOfGenerations + " (mutation rate: " + mutationRate + ", crossover rate: " + crossoverRate + ")");
+
+            currentPopulation.crossoverRate = crossoverRate;
+            currentPopulation.mutationRate = mutationRate;
             currentPopulation = selection(); // Select new population
             currentPopulation.mutate(mutationRate);
             currentPopulation.crossover(crossoverRate);

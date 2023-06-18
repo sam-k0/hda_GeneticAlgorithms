@@ -41,7 +41,7 @@ public class Main
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(500,0.02, 0.02);
+		geneticAlgorithm.run(100,0.1, 0.5);
 /**/
 
 

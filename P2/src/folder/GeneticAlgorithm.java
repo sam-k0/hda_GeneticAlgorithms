@@ -119,13 +119,21 @@ public class GeneticAlgorithm {
             ldata.add(String.format(Locale.GERMANY,"%f",p.crossoverRate)); // crossover rate
             ldata.add(String.format(Locale.GERMANY,"%f",p.mutationRate)); // mutation rate
 
-            String[] data =  ldata.toArray(new String[0]);
+            String[] data = ldata.toArray(new String[0]);
             dumper.writeToCSVFile(data);            
             i++;
         }
 
         dumper.saveCSVFile();
         new ImageGenerator(bestBestFolder, "besteFaltung.png");
+
+        i = 0;
+
+        for(Population p : this.allPopulations) // Iterate all populations
+        {
+            p.dumpToFile("Generation" + i + ".csv");
+            i++;
+        }
     }
 
     public void run(int numOfGenerations, double maxMutationRate, double maxCrossoverRate)
@@ -133,20 +141,20 @@ public class GeneticAlgorithm {
         allPopulations = new ArrayList<>();
         allPopulations.add(currentPopulation);
         int expectedNum = currentPopulation.num; // Set the expected number of individuals in the new population
-        double mutationRate = 0.0;
-        double crossoverRate = 0.0;
+        double mutationRate = maxMutationRate;
+        double crossoverRate = maxCrossoverRate;
 
         for(int i = 0; i < numOfGenerations; i++)
         {
             // Calculate mutation and crossover rates
-            mutationRate = (i / (double) numOfGenerations) * maxMutationRate;
-            crossoverRate = (i / (double) numOfGenerations) * maxCrossoverRate;
-
+            mutationRate = maxMutationRate * (1 - ((double) i / numOfGenerations));
+            crossoverRate = maxCrossoverRate * (1 - ((double) i / numOfGenerations));
+            
             System.out.println("Generation " + i + " of " + numOfGenerations + " (mutation rate: " + mutationRate + ", crossover rate: " + crossoverRate + ")");
 
             currentPopulation.crossoverRate = crossoverRate;
             currentPopulation.mutationRate = mutationRate;
-            currentPopulation = selection(); // Select new population
+            currentPopulation = selectionTournament(5); // Select new population
             currentPopulation.mutate(mutationRate);
             currentPopulation.crossover(crossoverRate);
             allPopulations.add(currentPopulation);

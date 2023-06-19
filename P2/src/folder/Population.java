@@ -1,4 +1,5 @@
 package folder;
+import java.io.FileWriter;
 import java.util.*;
 
 import folder.Element.Direction;
@@ -219,6 +220,26 @@ public class Population {
         return population.get(pos);
     }
 
+    public void dumpToFile(String filename)
+    {
+        String[] headers = {
+            "fitness","overlaps"
+            };
+        CSVDumper dumper = new CSVDumper(filename, headers);
+
+        for(Folder f : this.population)
+        {
+            ArrayList<String> ldata = new ArrayList<>();
+
+            ldata.add(String.valueOf(f.getFitness()));
+            ldata.add(String.valueOf(f.getOverlaps()));
+
+            String[] data =  ldata.toArray(new String[0]);
+            dumper.writeToCSVFile(data);     
+        }
+
+        dumper.saveCSVFile();
+    }
     // Prints info about all foldings
     public void printAllFoldingsDirections()
     {

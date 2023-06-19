@@ -35,13 +35,13 @@ public class Main
 
 // Running GA
 /**/
-		Folder f = new Folder(Examples.SEQ50);
+		Folder f = new Folder(Examples.SEQ20);
 
 		Population population = new Population(f, 200);
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(100,0.1, 0.5);
+		geneticAlgorithm.run(100,0.02f, 0.05f);
 /**/
 
 

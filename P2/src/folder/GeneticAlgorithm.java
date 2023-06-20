@@ -5,6 +5,16 @@ import java.util.*;
 public class GeneticAlgorithm {
     private List<Population> allPopulations;
     private Population currentPopulation;
+    private String[] headers = {
+        "Gen",
+        "Avg Gen Fitness",
+        "Fit of Gen best",
+        "Fit of Total Best",
+        "total best contact cnt",
+        "total best overlaps cnt",
+        "crossover rate",
+        "mutation rate"
+        };
 
     public GeneticAlgorithm(Population p)
     {
@@ -84,17 +94,6 @@ public class GeneticAlgorithm {
     private void dumpToFile()
     {
         int i = 0;
-        String[] headers = {
-        "Gen",
-        "Avg Gen Fitness",
-        "Fit of Gen best",
-        "Fit of Total Best",
-        "total best contact cnt",
-        "total best overlaps cnt",
-        "crossover rate",
-        "mutation rate"
-        };
-
         CSVDumper dumper = new CSVDumper("Generations.csv", headers);
         
         Folder bestBestFolder = allPopulations.get(0).getBestCandidate();
@@ -131,7 +130,7 @@ public class GeneticAlgorithm {
 
         for(Population p : this.allPopulations) // Iterate all populations
         {
-            p.dumpToFile("Generation" + i + ".csv");
+            //p.dumpToFile("Generation" + i + ".csv");
             i++;
         }
     }
@@ -144,6 +143,11 @@ public class GeneticAlgorithm {
         double mutationRate = maxMutationRate;
         double crossoverRate = maxCrossoverRate;
 
+        // Für logging
+        CSVDumper dumper = new CSVDumper("GenerationsMain.csv", headers);
+        Folder bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
+        Folder bestBestFolder = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
+
         for(int i = 0; i < numOfGenerations; i++)
         {
             // Calculate mutation and crossover rates
@@ -154,10 +158,35 @@ public class GeneticAlgorithm {
 
             currentPopulation.crossoverRate = crossoverRate;
             currentPopulation.mutationRate = mutationRate;
-            currentPopulation = selectionTournament(5); // Select new population
+            currentPopulation = selection(); // Select new population
             currentPopulation.mutate(mutationRate);
             currentPopulation.crossover(crossoverRate);
-            allPopulations.add(currentPopulation);
+            
+            // Logging
+            currentPopulation.crossoverRate = crossoverRate;
+            currentPopulation.mutationRate = mutationRate;
+            
+            bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
+
+            if(bestBestFolder.getFitness() < bestOfThisGen.getFitness()) // if this generations best is better than total best
+            {
+               bestBestFolder = bestOfThisGen; // update total best
+            }
+
+            ArrayList<String> ldata = new ArrayList<>();
+            ldata.add(String.valueOf(i)); // gen
+            ldata.add(String.format(Locale.GERMANY,"%f",currentPopulation.getAvgFitness())); // avg gen fit
+            ldata.add(String.format(Locale.GERMANY,"%f",bestOfThisGen.getFitness())); // fit of gen best
+            ldata.add(String.format(Locale.GERMANY,"%f",bestBestFolder.getFitness())); // fit of total best
+            ldata.add(String.valueOf(bestBestFolder.getContacts())); // contacts
+            ldata.add(String.valueOf(bestBestFolder.getOverlaps()));  // overlaps
+            ldata.add(String.format(Locale.GERMANY,"%f",currentPopulation.crossoverRate)); // crossover rate
+            ldata.add(String.format(Locale.GERMANY,"%f",currentPopulation.mutationRate)); // mutation rate
+
+            String[] data = ldata.toArray(new String[0]);
+            dumper.writeToCSVFile(data);
+
+            allPopulations.add(currentPopulation.clonePopulation());
 
             // Check for errors (population size is too small)
             if(currentPopulation.getFoldings().size() < expectedNum)
@@ -165,6 +194,7 @@ public class GeneticAlgorithm {
                 System.out.println("ERROR: Population size is too small!");            
             }
         }
+        dumper.saveCSVFile();
 
         dumpToFile(); // erstellt auch das Bild der besten Faltung
     }

@@ -9,7 +9,7 @@ public class Population {
     public int num;
     public double totalFitness;
     public double avgFitness;
-    public double crossoverRate = 0.0;
+    public double crossoverRate = 0.0; // nur für logging
     public double mutationRate= 0.0;
 
     List<Double> proportionalFitnesses = new ArrayList<>();
@@ -56,9 +56,9 @@ public class Population {
 
 
     // randomize directon at one position
-    private void randomizeDirection(int index)
+    public void randomizeDirection(int index)
     {
-        Folder current = population.get(index);
+        Folder current = cloneFolding(population.get(index));
         // Choose a random position in the current element to change the Direction
         int pos = (int)(Math.random() * current.getLength()-1);
         Element currentE = current.getHead();
@@ -92,6 +92,9 @@ public class Population {
                 changedCorrectly = true;
             }
         }
+    
+        new ImageGenerator(current, "mutated.png");
+        population.set(index, current);
     }
 
     public void mutate(double mutationRate)
@@ -113,9 +116,24 @@ public class Population {
         }
     }
    
-   
+    public Population clonePopulation()
+    {
+        List<Folder> folders = new ArrayList<Folder>();
+
+        for(Folder f : this.population)
+        {
+            folders.add(cloneFolding(f));
+        }
+
+        Population p = new Population(folders);
+        p.crossoverRate = this.crossoverRate;
+        p.mutationRate = this.mutationRate;
+        p.avgFitness = this.avgFitness;
+        p.totalFitness = this.totalFitness;
+        return p;
+    }
     // Makes a deep copy of the given folding
-    private Folder cloneFolding(Folder folder)
+    public Folder cloneFolding(Folder folder)
     {
         Folder newFolder = new Folder(); 
         Element current = folder.getHead();

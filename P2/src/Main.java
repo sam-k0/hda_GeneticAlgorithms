@@ -1,15 +1,16 @@
 import folder.*;
-import folder.Examples;
+import folder.Element.Direction;
+import folder.Element.EColor;
 public class Main
 {
 	public static void main(String args[])
 	{
 		//System.out.println("Amogir");
-/*/
+
 		Folder f = new Folder();
 		
 		//System.out.println("Hamming dist:" + f.calculateHammingDistance(2891, 3927));
-
+		
 		// Aufg. 1
 		f.addElement(new Element(0, Direction.STRAIGHT, EColor.BLACK));
 		f.addElement(new Element(1, Direction.LEFT, EColor.WHITE));
@@ -19,6 +20,14 @@ public class Main
 		f.addElement(new Element(5, Direction.STRAIGHT, EColor.WHITE));
 		f.addElement(new Element(6, Direction.RIGHT, EColor.WHITE));
 		f.addElement(new Element(7, Direction.STRAIGHT, EColor.BLACK));
+
+		Population p = new Population(f,1);
+
+		new ImageGenerator(p.getFoldingAt(0), "Amogus1.png");
+
+		p.randomizeDirection(0);
+
+		new ImageGenerator(p.getFoldingAt(0) , "amogus2.png");
 
 /*
 		Folder f2 = new Folder();
@@ -34,14 +43,14 @@ public class Main
 
 
 // Running GA
-/**/
+/**
 		Folder f = new Folder(Examples.SEQ20);
 
 		Population population = new Population(f, 200);
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(100,0.02f, 0.05f);
+		geneticAlgorithm.run(100,0.00f, 0.00f);
 /**/
 
 

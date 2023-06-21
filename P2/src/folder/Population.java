@@ -58,7 +58,8 @@ public class Population {
     // randomize directon at one position
     public void randomizeDirection(int index)
     {
-        Folder current = cloneFolding(population.get(index));
+        //Folder current = cloneFolding(population.get(index));
+        Folder current = population.get(index);
         // Choose a random position in the current element to change the Direction
         int pos = (int)(Math.random() * current.getLength()-1);
         Element currentE = current.getHead();
@@ -92,9 +93,9 @@ public class Population {
                 changedCorrectly = true;
             }
         }
-    
+        currentE.setDirection(newDir);//Set the new direction???
         new ImageGenerator(current, "mutated.png");
-        population.set(index, current);
+        //population.set(index, current);
     }
 
     public void mutate(double mutationRate)

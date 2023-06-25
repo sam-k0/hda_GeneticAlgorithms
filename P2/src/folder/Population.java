@@ -94,7 +94,7 @@ public class Population {
             }
         }
         currentE.setDirection(newDir);//Set the new direction???
-        new ImageGenerator(current, "mutated.png");
+        ///new ImageGenerator(current, "mutated.png");
         //population.set(index, current);
     }
 

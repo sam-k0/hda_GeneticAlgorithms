@@ -7,7 +7,7 @@ public class Main
 	{
 		//System.out.println("Amogir");
 
-		Folder f = new Folder();
+		/**Folder f = new Folder();
 		
 		//System.out.println("Hamming dist:" + f.calculateHammingDistance(2891, 3927));
 		
@@ -43,14 +43,29 @@ public class Main
 
 
 // Running GA
-/**
+/* */
 		Folder f = new Folder(Examples.SEQ20);
 
 		Population population = new Population(f, 200);
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(100,0.00f, 0.00f);
+		geneticAlgorithm.run(100,0.03f, 0.03f);
+
+		int popnum = 0;
+		int fnum = 0;
+
+		/* Printing all Foldings../
+		for(Population pp : geneticAlgorithm.getAllPopulations())
+		{
+			for(Folder ff : pp.getFoldings())
+			{
+				ImageGenerator ig = new ImageGenerator(ff, "image"+String.valueOf(popnum)+"_"+String.valueOf(fnum)+".png");
+				fnum++;
+			}
+			popnum++;
+			fnum = 0;
+		}
 /**/
 
 

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class GeneticAlgorithm {
     private List<Population> allPopulations;
-    private Population currentPopulation;
+    public Population currentPopulation;
     private String[] headers = {
         "Gen",
         "Avg Gen Fitness",
@@ -50,40 +50,34 @@ public class GeneticAlgorithm {
         return new Population(selectedFoldings);
     }
 
-    public Population selectionTournament(int tournamentSize)
-    {
-        int populationSize = currentPopulation.num;
-        Random random = new Random();
-        List<Folder> forNewPop = new ArrayList<>();
+    private Population tournamentSelection(Population population) {
+        final int k = 2;                                                                                // amount of candidates in tournament
+        List<Folder> newGeneration = new ArrayList<>();
 
-        // Perform tournament selection multiple times to create the new population
-        for (int i = 0; i < populationSize; i++) {
-            List<Folder> tournament = new ArrayList<>();
-
-            // Select random individuals for the tournament
-            for (int j = 0; j < tournamentSize; j++) {
-                int randomIndex = random.nextInt(currentPopulation.num);
-                Folder folder = currentPopulation.getFoldingAt(randomIndex);
-                tournament.add(folder);
+        while (newGeneration.size() < population.num) {                              // 4. until we have a new generation with same size
+            List<Folder> tournamentCandidates = new ArrayList<>();
+            for (int i = 0; i < k; i++) {                                                                 // 1. choose k random candidates out of population
+                int aminoSelection = new SplittableRandom().nextInt(population.num);
+                tournamentCandidates.add(population.getFoldingAt(aminoSelection));
             }
+            newGeneration.add(tournament(tournamentCandidates));                // 2. tournament between those candidates
+        }
+        return new Population(newGeneration);
+    }
 
-            // Sort the tournament individuals by fitness (ascending order)
-            Collections.sort(tournament, new Comparator<Folder>() {
-                @Override
-                public int compare(Folder folder1, Folder folder2) {
-                    // Compare fitness values (assuming higher is better)
-                    return Double.compare(folder1.getFitness(), folder2.getFitness());
-                }
-            });
+    private Folder tournament(List<Folder> tournamentCandidates) {
+        double t = 0.75;                                                                                // 75% chance of the higher fitness to win in tournament
+        Folder winner = tournamentCandidates.get(0);
 
-            // Select the individual with the highest fitness (last in the sorted tournament list)
-            Folder selectedFolder = tournament.get(tournamentSize - 1);
-
-            // Add the selected individual to the new population
-            forNewPop.add(selectedFolder);
+        for (Folder folding : tournamentCandidates) {                                                  // loop through all candidates
+            if (folding.getFitness() > winner.getFitness()){
+                winner = folding;                                                                           // if a candidate with a higher fitness is found override first per default
+            }
+            else if(t< new SplittableRandom().nextDouble())
+            winner = folding;                                                                           // however: with a 25% chance of a candidate with a lower fitness override to the new one anyway
         }
 
-        return new Population(forNewPop);
+        return currentPopulation.cloneFolding(winner);                                                     // 3. winner gets added to new generation
     }
 
     public List<Population> getAllPopulations()
@@ -144,9 +138,9 @@ public class GeneticAlgorithm {
         double crossoverRate = maxCrossoverRate;
 
         // Für logging
-        CSVDumper dumper = new CSVDumper("GenerationsMain.csv", headers);
-        Folder bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
-        Folder bestBestFolder = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
+        //CSVDumper dumper = new CSVDumper("GenerationsMain.csv", headers);
+        //Folder bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
+        //Folder bestBestFolder = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
 
         for(int i = 0; i < numOfGenerations; i++)
         {
@@ -158,22 +152,22 @@ public class GeneticAlgorithm {
 
             currentPopulation.crossoverRate = crossoverRate;
             currentPopulation.mutationRate = mutationRate;
-            currentPopulation = selection(); // Select new population
+            currentPopulation = tournamentSelection(currentPopulation.clonePopulation());// new population
             currentPopulation.mutate(mutationRate);
             currentPopulation.crossover(crossoverRate);
             
             // Logging
-            currentPopulation.crossoverRate = crossoverRate;
-            currentPopulation.mutationRate = mutationRate;
+            //currentPopulation.crossoverRate = crossoverRate;
+            //currentPopulation.mutationRate = mutationRate;
             
-            bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
+            //bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
 
-            if(bestBestFolder.getFitness() < bestOfThisGen.getFitness()) // if this generations best is better than total best
-            {
-               bestBestFolder = bestOfThisGen; // update total best
-            }
+            //if(bestBestFolder.getFitness() < bestOfThisGen.getFitness()) // if this generations best is better than total best
+            //{
+            //   bestBestFolder = bestOfThisGen; // update total best
+            // }
 
-            ArrayList<String> ldata = new ArrayList<>();
+            /*ArrayList<String> ldata = new ArrayList<>();
             ldata.add(String.valueOf(i)); // gen
             ldata.add(String.format(Locale.GERMANY,"%f",currentPopulation.getAvgFitness())); // avg gen fit
             ldata.add(String.format(Locale.GERMANY,"%f",bestOfThisGen.getFitness())); // fit of gen best
@@ -185,6 +179,7 @@ public class GeneticAlgorithm {
 
             String[] data = ldata.toArray(new String[0]);
             dumper.writeToCSVFile(data);
+            */
 
             allPopulations.add(currentPopulation.clonePopulation());
 
@@ -194,7 +189,7 @@ public class GeneticAlgorithm {
                 System.out.println("ERROR: Population size is too small!");            
             }
         }
-        dumper.saveCSVFile();
+        //dumper.saveCSVFile();
 
         dumpToFile(); // erstellt auch das Bild der besten Faltung
     }

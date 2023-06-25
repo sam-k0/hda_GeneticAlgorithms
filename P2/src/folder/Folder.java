@@ -6,7 +6,7 @@ import folder.Element.CDir;
 import folder.Element.EColor;
 import folder.Element.Direction;
 
-public class Folder {
+public class Folder implements Comparable<Folder>{
 
     private Element lastInserted = null;
     private Element head = null; // first inserted (id 0)
@@ -303,6 +303,11 @@ public class Folder {
             curr = curr.getNext();
         }
         return length;
+    }
+
+    public int compareTo(Folder other) {
+        // Compare individuals based on their fitness values
+        return Double.compare(other.getFitness(), this.getFitness());
     }
 
 }

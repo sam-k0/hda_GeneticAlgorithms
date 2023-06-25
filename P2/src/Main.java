@@ -44,13 +44,13 @@ public class Main
 
 // Running GA
 /* */
-		Folder f = new Folder(Examples.SEQ20);
+		Folder f = new Folder(Examples.SEQ50);
 
 		Population population = new Population(f, 200);
 		//population.printAllFoldingsDirections();
 		GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(population);
 
-		geneticAlgorithm.run(100,0.03f, 0.03f);
+		geneticAlgorithm.run(1000,0.05f, 0.05f);
 
 		int popnum = 0;
 		int fnum = 0;

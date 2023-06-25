@@ -62,7 +62,10 @@ public class GeneticAlgorithm {
             }
             newGeneration.add(tournament(tournamentCandidates));                // 2. tournament between those candidates
         }
-        return new Population(newGeneration);
+        Population p = new Population(newGeneration);
+        p.mutationRate = population.mutationRate;
+        p.crossoverRate = population.crossoverRate;
+        return p;
     }
 
     private Folder tournament(List<Folder> tournamentCandidates) {

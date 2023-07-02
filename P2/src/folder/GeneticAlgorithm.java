@@ -155,7 +155,9 @@ public class GeneticAlgorithm {
 
             currentPopulation.crossoverRate = crossoverRate;
             currentPopulation.mutationRate = mutationRate;
-            currentPopulation = tournamentSelection(currentPopulation.clonePopulation());// new population
+            //currentPopulation = tournamentSelection(currentPopulation.clonePopulation());// new population
+            currentPopulation = currentPopulation.clonePopulation();
+            currentPopulation = selection();
             currentPopulation.mutate(mutationRate);
             currentPopulation.crossover(crossoverRate);
             

@@ -134,16 +134,14 @@ public class GeneticAlgorithm {
 
     public void run(int numOfGenerations, double maxMutationRate, double maxCrossoverRate)
     {
+        // Time measuring
+        long startTime = System.nanoTime();
+
         allPopulations = new ArrayList<>();
         allPopulations.add(currentPopulation);
         int expectedNum = currentPopulation.num; // Set the expected number of individuals in the new population
         double mutationRate = maxMutationRate;
         double crossoverRate = maxCrossoverRate;
-
-        // Für logging
-        //CSVDumper dumper = new CSVDumper("GenerationsMain.csv", headers);
-        //Folder bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
-        //Folder bestBestFolder = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
 
         for(int i = 0; i < numOfGenerations; i++)
         {
@@ -161,31 +159,6 @@ public class GeneticAlgorithm {
             currentPopulation.mutate(mutationRate);
             currentPopulation.crossover(crossoverRate);
             
-            // Logging
-            //currentPopulation.crossoverRate = crossoverRate;
-            //currentPopulation.mutationRate = mutationRate;
-            
-            //bestOfThisGen = currentPopulation.cloneFolding(currentPopulation.getBestCandidate()); // Clone
-
-            //if(bestBestFolder.getFitness() < bestOfThisGen.getFitness()) // if this generations best is better than total best
-            //{
-            //   bestBestFolder = bestOfThisGen; // update total best
-            // }
-
-            /*ArrayList<String> ldata = new ArrayList<>();
-            ldata.add(String.valueOf(i)); // gen
-            ldata.add(String.format(Locale.GERMANY,"%f",currentPopulation.getAvgFitness())); // avg gen fit
-            ldata.add(String.format(Locale.GERMANY,"%f",bestOfThisGen.getFitness())); // fit of gen best
-            ldata.add(String.format(Locale.GERMANY,"%f",bestBestFolder.getFitness())); // fit of total best
-            ldata.add(String.valueOf(bestBestFolder.getContacts())); // contacts
-            ldata.add(String.valueOf(bestBestFolder.getOverlaps()));  // overlaps
-            ldata.add(String.format(Locale.GERMANY,"%f",currentPopulation.crossoverRate)); // crossover rate
-            ldata.add(String.format(Locale.GERMANY,"%f",currentPopulation.mutationRate)); // mutation rate
-
-            String[] data = ldata.toArray(new String[0]);
-            dumper.writeToCSVFile(data);
-            */
-
             allPopulations.add(currentPopulation.clonePopulation());
 
             // Check for errors (population size is too small)
@@ -194,7 +167,12 @@ public class GeneticAlgorithm {
                 System.out.println("ERROR: Population size is too small!");            
             }
         }
-        //dumper.saveCSVFile();
+
+        long endTime = System.nanoTime();
+        double elapsedTimeSeconds = (endTime - startTime) / 1_000_000_000.0;
+        
+        System.out.println("Execution time: " + elapsedTimeSeconds + " seconds");
+    
 
         dumpToFile(); // erstellt auch das Bild der besten Faltung
     }

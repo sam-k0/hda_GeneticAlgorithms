@@ -41,7 +41,7 @@ public class CSVDumper {
                 }
             }
             writer.append('\n');
-            System.out.println("Data written to CSV file successfully.");
+            //System.out.println("Data written to CSV file successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class CSVDumper {
         try {
             File file = new File(filePath);
             if (file.exists()) {
-                System.out.println("File already exists.");
+                System.out.println("File already exists. Overwriting...");
                 return;
             }
             if (file.createNewFile()) {
